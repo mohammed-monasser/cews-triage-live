@@ -59,11 +59,11 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Patient ID": "={{ $('On form submission').item.json['Patient ID'] }}",
-            "Age": "={{ $('On form submission').item.json.Age }}",
-            "INR Level": "={{ $('On form submission').item.json['INR Level'] }}",
-            "RBS Level": "={{ $('On form submission').item.json['RBS level'] }}",
-            "Timestamp": "={{ $('Date & Time').item.json.Formatted_Date }}"
+            "Patient ID": "={{ \u0024('On form submission').item.json['Patient ID'] }}",
+            "Age": "={{ \u0024('On form submission').item.json.Age }}",
+            "INR Level": "={{ \u0024('On form submission').item.json['INR Level'] }}",
+            "RBS Level": "={{ \u0024('On form submission').item.json['RBS level'] }}",
+            "Timestamp": "={{ \u0024('Date & Time').item.json.Formatted_Date }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -148,7 +148,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ ((\(('On form submission').item.json.Age > 65 &&\)('On form submission').item.json['INR Level'] > 2.5) || (\(('On form submission').item.json.Age <= 65 &&\)('On form submission').item.json['INR Level'] > 3)) && ((\(('On form submission').item.json.Age > 65 &&\)('On form submission').item.json['RBS level'] > 250) || (\(('On form submission').item.json.Age <= 65 &&\)('On form submission').item.json['RBS level'] > 300)) }}",
+                    "leftValue": "={{ ((\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['INR Level'] > 2.5) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['INR Level'] > 3)) && ((\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['RBS level'] > 250) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['RBS level'] > 300)) }}",
                     "rightValue": "true",
                     "operator": {
                       "type": "string",
@@ -173,7 +173,7 @@
                 "conditions": [
                   {
                     "id": "8d41d210-c582-4649-b965-ec28e77007f0",
-                    "leftValue": "={{ (\(('On form submission').item.json.Age > 65 &&\)('On form submission').item.json['INR Level'] > 2.5) || (\(('On form submission').item.json.Age <= 65 &&\)('On form submission').item.json['INR Level'] > 3) }}",
+                    "leftValue": "={{ (\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['INR Level'] > 2.5) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['INR Level'] > 3) }}",
                     "rightValue": "true",
                     "operator": {
                       "type": "string",
@@ -197,7 +197,7 @@
                 "conditions": [
                   {
                     "id": "7e473793-f0c4-4586-9fa4-4107ea3ee02d",
-                    "leftValue": "={{ (\(('On form submission').item.json.Age > 65 &&\)('On form submission').item.json['RBS level'] > 250) || (\(('On form submission').item.json.Age <= 65 &&\)('On form submission').item.json['RBS level'] > 300) }}",
+                    "leftValue": "={{ (\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['RBS level'] > 250) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['RBS level'] > 300) }}",
                     "rightValue": "true",
                     "operator": {
                       "type": "string",
@@ -228,7 +228,7 @@
     {
       "parameters": {
         "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨🚨 طوارئ قصوى: خطر سريري مزدوج (سيولة + سكر)\n\nملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
+        "subject": "=🚨🚨 طوارئ قصوى: خطر سريري مزدوج (سيولة + سكر)\n\nملف رقم {{ \u0024('On form submission').item.json['Patient ID'] }}",
         "emailType": "text",
         "message": "التوصية السريرية (طوارئ قصوى): حالة حرجة معقدة. المريض يواجه خطراً مزدوجاً يتمثل في ارتفاع شديد في مستوى السيولة (INR) مما يرفع احتمالية النزيف، متزامناً مع ارتفاع حرج في سكر الدم (RBS) مما ينذر بحماض كيتوني (DKA) أو حالة فرط أسمولية (HHS). يُرجى التدخل الفوري لموازنة السوائل، وإجراء تقييم شامل قبل أي تداخل جراحي أو تعديل في بروتوكول التخثر.",
         "options": {
@@ -254,7 +254,7 @@
     {
       "parameters": {
         "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨 تنبيه طبي: خطر نزيف مرجح (ارتفاع INR)\nملف رقم: {{ $('On form submission').item.json['Patient ID'] }}",
+        "subject": "=🚨 تنبيه طبي: خطر نزيف مرجح (ارتفاع INR)\nملف رقم: {{ \u0024('On form submission').item.json['Patient ID'] }}",
         "emailType": "text",
         "message": "التوصية السريرية: مستوى السيولة (INR) يتجاوز العتبة العلاجية الآمنة. هناك خطر مرتفع لحدوث نزيف تلقائي أو مضاعفات نزفية. يُرجى التقييم الفوري للعلامات الحيوية، ومراجعة جرعات الأدوية المميعة للدم (مثل الوارفارين)، والنظر في بروتوكولات الانعكاس (Reversal) إذا استدعت الحالة السريرية.",
         "options": {
@@ -280,7 +280,7 @@
     {
       "parameters": {
         "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨 تنبيه طبي: خطر أيضي (ارتفاع RBS)\nملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
+        "subject": "=🚨 تنبيه طبي: خطر أيضي (ارتفاع RBS)\nملف رقم {{ \u0024('On form submission').item.json['Patient ID'] }}",
         "emailType": "text",
         "message": "التوصية السريرية: ارتفاع حرج في مستوى السكر العشوائي في الدم (RBS). المريض عُرضة لمضاعفات الخطر الأيضي مثل الحماض الكيتوني السكري (DKA) أو متلازمة فرط الأسمولية (HHS). يُرجى إجراء تقييم فوري لمستوى الكيتونات، وتقييم حالة الجفاف، والبدء ببروتوكول السوائل الوريدية وإدارة الأنسولين وفقاً للمعطيات.",
         "options": {
@@ -306,7 +306,7 @@
     {
       "parameters": {
         "operation": "formatDate",
-        "date": "={{ $json.submittedAt }}",
+        "date": "={{ \u0024json.submittedAt }}",
         "format": "=yyyy-MM-dd HH:mm",
         "outputFieldName": "Formatted_Date",
         "options": {
