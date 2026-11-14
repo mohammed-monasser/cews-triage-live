@@ -6,50 +6,23 @@
         "formTitle": "CEWS: Critical Lab Results Ingestion",
         "formFields": {
           "values": [
-            {
-              "fieldLabel": "Patient ID",
-              "requiredField": true
-            },
-            {
-              "fieldLabel": "Age",
-              "fieldType": "number",
-              "requiredField": true
-            },
+            { "fieldLabel": "Patient ID", "requiredField": true },
+            { "fieldLabel": "Age", "fieldType": "number", "requiredField": true },
             {
               "fieldLabel": "Gender",
               "fieldType": "dropdown",
-              "fieldOptions": {
-                "values": [
-                  {
-                    "option": "Male"
-                  },
-                  {
-                    "option": "Female"
-                  }
-                ]
-              },
+              "fieldOptions": { "values": [ { "option": "Male" }, { "option": "Female" } ] },
               "requiredField": true
             },
-            {
-              "fieldLabel": "INR",
-              "fieldType": "number",
-              "requiredField": true
-            },
-            {
-              "fieldLabel": "RBS",
-              "fieldType": "number",
-              "requiredField": true
-            }
+            { "fieldLabel": "INR", "fieldType": "number", "requiredField": true },
+            { "fieldLabel": "RBS", "fieldType": "number", "requiredField": true }
           ]
         },
         "options": {}
       },
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.6,
-      "position": [
-        -800,
-        176
-      ],
+      "position": [-800, 176],
       "id": "1339bd66-8364-463b-ac1c-6f6f13f1472b",
       "name": "On form submission",
       "webhookId": "36b0da09-a388-4c81-a173-903ca84e453b"
@@ -60,16 +33,11 @@
         "date": "={{ $json.submittedAt }}",
         "format": "=yyyy-MM-dd HH:mm",
         "outputFieldName": "Formatted_Date",
-        "options": {
-          "includeInputFields": true
-        }
+        "options": { "includeInputFields": true }
       },
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
-      "position": [
-        -592,
-        176
-      ],
+      "position": [-592, 176],
       "id": "c962339b-53ca-4f57-987c-84aeca9badad",
       "name": "Date & Time"
     },
@@ -79,30 +47,19 @@
           "values": [
             {
               "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
                 "conditions": [
                   {
                     "id": "d04be27c-8365-4b39-a36e-ed0d65c18bbd",
                     "leftValue": "={{ $('On form submission').item.json.INR }}",
                     "rightValue": 3.5,
-                    "operator": {
-                      "type": "number",
-                      "operation": "gt"
-                    }
+                    "operator": { "type": "number", "operation": "gt" }
                   },
                   {
                     "id": "a19be27c-8365-4b39-a36e-ed0d65c18bb1",
                     "leftValue": "={{ $('On form submission').item.json.RBS }}",
                     "rightValue": 300,
-                    "operator": {
-                      "type": "number",
-                      "operation": "gt"
-                    }
+                    "operator": { "type": "number", "operation": "gt" }
                   }
                 ],
                 "combinator": "and"
@@ -112,30 +69,19 @@
             },
             {
               "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
                 "conditions": [
                   {
                     "id": "8d41d210-c582-4649-b965-ec28e77007f0",
                     "leftValue": "={{ $('On form submission').item.json.INR }}",
                     "rightValue": 3.5,
-                    "operator": {
-                      "type": "number",
-                      "operation": "gt"
-                    }
+                    "operator": { "type": "number", "operation": "gt" }
                   },
                   {
                     "id": "b241d210-c582-4649-b965-ec28e77007f2",
                     "leftValue": "={{ $('On form submission').item.json.RBS }}",
                     "rightValue": 300,
-                    "operator": {
-                      "type": "number",
-                      "operation": "lte"
-                    }
+                    "operator": { "type": "number", "operation": "lte" }
                   }
                 ],
                 "combinator": "and"
@@ -145,30 +91,19 @@
             },
             {
               "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
                 "conditions": [
                   {
                     "id": "7e473793-f0c4-4586-9fa4-4107ea3ee02d",
                     "leftValue": "={{ $('On form submission').item.json.RBS }}",
                     "rightValue": 300,
-                    "operator": {
-                      "type": "number",
-                      "operation": "gt"
-                    }
+                    "operator": { "type": "number", "operation": "gt" }
                   },
                   {
                     "id": "c3473793-f0c4-4586-9fa4-4107ea3ee023",
                     "leftValue": "={{ $('On form submission').item.json.INR }}",
                     "rightValue": 3.5,
-                    "operator": {
-                      "type": "number",
-                      "operation": "lte"
-                    }
+                    "operator": { "type": "number", "operation": "lte" }
                   }
                 ],
                 "combinator": "and"
@@ -178,16 +113,11 @@
             }
           ]
         },
-        "options": {
-          "fallbackOutput": "extra"
-        }
+        "options": { "fallbackOutput": "extra" }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
-      "position": [
-        -336,
-        144
-      ],
+      "position": [-336, 144],
       "id": "c1bf3df8-f2be-451e-86e0-b67aab080f1f",
       "name": "Switch"
     },
@@ -216,74 +146,18 @@
             "Age": "={{ $('On form submission').item.json.Age }}",
             "INR": "={{ $('On form submission').item.json.INR }}",
             "RBS": "={{ $('On form submission').item.json.RBS }}",
-            "Triage Category": "={{ ($('On form submission').item.json.INR > 3.5 &&$('On form submission').item.json.RBS > 300) ? 'Dual Critical Risk' : ($('On form submission').item.json.INR > 3.5 ? 'Bleeding Liability' : ($('On form submission').item.json.RBS > 300 ? 'Metabolic Crisis' : 'Normal Baseline')) }}",
-            "Dispatch Status": "={{ ($('On form submission').item.json.INR <= 3.5 &&$('On form submission').item.json.RBS <= 300) ? 'Logged (Fallback Sink)' : 'Dispatched (Gmail API)' }}"
+            "Triage Category": "={{ ($('On form submission').item.json.INR > 3.5 && $('On form submission').item.json.RBS > 300) ? 'Dual Critical Risk' : ($('On form submission').item.json.INR > 3.5 ? 'Bleeding Liability' : ($('On form submission').item.json.RBS > 300 ? 'Metabolic Crisis' : 'Normal Baseline')) }}",
+            "Dispatch Status": "={{ ($('On form submission').item.json.INR <= 3.5 && $('On form submission').item.json.RBS <= 300) ? 'Logged (Fallback Sink)' : 'Dispatched (Gmail API)' }}"
           },
           "matchingColumns": [],
           "schema": [
-            {
-              "id": "Formatted_Date",
-              "displayName": "Formatted_Date",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Patient ID",
-              "displayName": "Patient ID",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Age",
-              "displayName": "Age",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "INR",
-              "displayName": "INR",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "RBS",
-              "displayName": "RBS",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Triage Category",
-              "displayName": "Triage Category",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Dispatch Status",
-              "displayName": "Dispatch Status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            }
+            { "id": "Formatted_Date", "displayName": "Formatted_Date", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "Patient ID", "displayName": "Patient ID", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "Age", "displayName": "Age", "required": false, "defaultMatch": false, "display": true, "type": "number", "canBeUsedToMatch": true },
+            { "id": "INR", "displayName": "INR", "required": false, "defaultMatch": false, "display": true, "type": "number", "canBeUsedToMatch": true },
+            { "id": "RBS", "displayName": "RBS", "required": false, "defaultMatch": false, "display": true, "type": "number", "canBeUsedToMatch": true },
+            { "id": "Triage Category", "displayName": "Triage Category", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "Dispatch Status", "displayName": "Dispatch Status", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true }
           ],
           "attemptToConvertTypes": false,
           "convertFieldsToString": false
@@ -292,17 +166,11 @@
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
-      "position": [
-        -128,
-        656
-      ],
+      "position": [-128, 656],
       "id": "445fcf2e-1c6a-48c1-b830-a8ec41bf4c64",
       "name": "Append row in sheet",
       "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "GOOGLE_SHEETS_OAUTH2_ID",
-          "name": "Google Sheets OAuth2 API"
-        }
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_OAUTH2_ID", "name": "Google Sheets OAuth2 API" }
       }
     },
     {
@@ -311,14 +179,66 @@
         "subject": "=🚨🚨 طوارئ قصوى: خطر سريري مزدوج (سيولة + سكر) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
         "emailType": "text",
         "message": "التوصية السريرية (طوارئ قصوى): حالة حرجة معقدة. المريض يواجه خطراً مزدوجاً يتمثل في: ارتفاع شديد في مستوى السيولة (INR) مما يرفع احتمالية النزيف، وارتفاع حرج متزامن في سكر الدم (RBS) مما ينذر بحماض كيتوني (DKA) أو حالة فرط أسمولية (HHS). الإجراء المطلوب: يرجى التدخل الفوري لموازنة السوائل، وإجراء تقييم شامل قبل أي تداخل جراحي أو تعديل في بروتوكول التخثر.",
-        "options": {
-          "appendAttribution": false
-        }
+        "options": { "appendAttribution": false }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
-      "position": [
-        0,
-        0
-      ],
-      "id": "4903f13b-61cc-4547-a17e-f1df149
+      "position": [0, 0],
+      "id": "4903f13b-61cc-4547-a17e-f1df1490f260",
+      "name": "Send a message",
+      "webhookId": "cbbcc179-a703-4134-9846-0c3c0b91acc7",
+      "credentials": { "gmailOAuth2": { "id": "GMAIL_OAUTH2_ID", "name": "Gmail OAuth2 API" } }
+    },
+    {
+      "parameters": {
+        "sendTo": "clinician-alert@hospital-domain.org",
+        "subject": "=🚨 تنبيه طبي: خطر نزيف مرجح (ارتفاع INR) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
+        "emailType": "text",
+        "message": "التوصية السريرية: مستوى السيولة (INR) يتجاوز العتبة العلاجية الآمنة (> 3.5). هناك خطر مرتفع لحدوث نزيف تلقائي أو مضاعفات نزفية. يُرجى التقييم الفوري للعلامات الحيوية، ومراجعة جرعات الأدوية المميعة للدم، والنظر في بروتوكولات الانعكاس (Reversal) إذا استدعت الحالة السريرية.",
+        "options": { "appendAttribution": false }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [16, 160],
+      "id": "87c47b93-135a-4894-86e2-9954b8a34c85",
+      "name": "Send a message1",
+      "webhookId": "cbbcc179-a703-4134-9846-0c3c0b91acc7",
+      "credentials": { "gmailOAuth2": { "id": "GMAIL_OAUTH2_ID", "name": "Gmail OAuth2 API" } }
+    },
+    {
+      "parameters": {
+        "sendTo": "clinician-alert@hospital-domain.org",
+        "subject": "=🚨 تنبيه طبي: خطر أيضي (ارتفاع RBS) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
+        "emailType": "text",
+        "message": "التوصية السريرية: ارتفاع حرج في مستوى السكر العشوائي في الدم (RBS > 300 mg/dL). المريض عُرضة لمضاعفات الخطر الأيضي مثل الحماض الكيتوني السكري (DKA) أو متلازمة فرط الأسمولية (HHS). يُرجى إجراء تقييم فوري لمستوى الكيتونات، وتقييم حالة الجفاف، والبدء ببروتوكول السوائل الوريدية وإدارة الأنسولين وفقاً للمعطيات.",
+        "options": { "appendAttribution": false }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [0, 432],
+      "id": "452ee425-9a77-4e54-8ee5-66a8330f51ba",
+      "name": "Send a message2",
+      "webhookId": "cbbcc179-a703-4134-9846-0c3c0b91acc7",
+      "credentials": { "gmailOAuth2": { "id": "GMAIL_OAUTH2_ID", "name": "Gmail OAuth2 API" } }
+    }
+  ],
+  "connections": {
+    "On form submission": { "main": [ [ { "node": "Date & Time", "type": "main", "index": 0 } ] ] },
+    "Date & Time": { "main": [ [ { "node": "Switch", "type": "main", "index": 0 } ] ] },
+    "Switch": {
+      "main": [
+        [ { "node": "Append row in sheet", "type": "main", "index": 0 }, { "node": "Send a message", "type": "main", "index": 0 } ],
+        [ { "node": "Append row in sheet", "type": "main", "index": 0 }, { "node": "Send a message1", "type": "main", "index": 0 } ],
+        [ { "node": "Append row in sheet", "type": "main", "index": 0 }, { "node": "Send a message2", "type": "main", "index": 0 } ],
+        [ { "node": "Append row in sheet", "type": "main", "index": 0 } ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": { "executionOrder": "v1", "binaryMode": "separate", "availableInMCP": false },
+  "versionId": "34f4e641-9da5-4765-abe1-e59d7c871fdf",
+  "meta": { "instanceId": "b6f6608172db347572a6bfe4357ec10af87bf8337780a62030f4f67f341c9f4a" },
+  "nodeGroups": [],
+  "id": "Ft7sXb4bhKpH170D",
+  "tags": []
+}
