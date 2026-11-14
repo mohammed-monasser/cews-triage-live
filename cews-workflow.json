@@ -1,9 +1,9 @@
 {
-  "name": "My workflow",
+  "name": "CEWS-Triage-Live",
   "nodes": [
     {
       "parameters": {
-        "formTitle": "Critical Lab Results",
+        "formTitle": "CEWS: Critical Lab Results Ingestion",
         "formFields": {
           "values": [
             {
@@ -16,12 +16,27 @@
               "requiredField": true
             },
             {
-              "fieldLabel": "INR Level",
+              "fieldLabel": "Gender",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Male"
+                  },
+                  {
+                    "option": "Female"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "INR",
               "fieldType": "number",
               "requiredField": true
             },
             {
-              "fieldLabel": "RBS level",
+              "fieldLabel": "RBS",
               "fieldType": "number",
               "requiredField": true
             }
@@ -41,98 +56,22 @@
     },
     {
       "parameters": {
-        "operation": "append",
-        "documentId": {
-          "__rl": true,
-          "value": "YOUR_GOOGLE_SHEET_ID",
-          "mode": "list",
-          "cachedResultName": "جدول بيانات بدون عنوان",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "الورقة1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Patient ID": "={{ \u0024('On form submission').item.json['Patient ID'] }}",
-            "Age": "={{ \u0024('On form submission').item.json.Age }}",
-            "INR Level": "={{ \u0024('On form submission').item.json['INR Level'] }}",
-            "RBS Level": "={{ \u0024('On form submission').item.json['RBS level'] }}",
-            "Timestamp": "={{ \u0024('Date & Time').item.json.Formatted_Date }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "Patient ID",
-              "displayName": "Patient ID",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Age",
-              "displayName": "Age",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "INR Level",
-              "displayName": "INR Level",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "RBS Level",
-              "displayName": "RBS Level",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Timestamp",
-              "displayName": "Timestamp",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        -128,
-        656
-      ],
-      "id": "445fcf2e-1c6a-48c1-b830-a8ec41bf4c64",
-      "name": "Append row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "GOOGLE_SHEETS_OAUTH2_ID",
-          "name": "Google Sheets OAuth2 API"
+        "operation": "formatDate",
+        "date": "={{ $json.submittedAt }}",
+        "format": "=yyyy-MM-dd HH:mm",
+        "outputFieldName": "Formatted_Date",
+        "options": {
+          "includeInputFields": true
         }
-      }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -592,
+        176
+      ],
+      "id": "c962339b-53ca-4f57-987c-84aeca9badad",
+      "name": "Date & Time"
     },
     {
       "parameters": {
@@ -148,13 +87,22 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ ((\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['INR Level'] > 2.5) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['INR Level'] > 3)) && ((\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['RBS level'] > 250) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['RBS level'] > 300)) }}",
-                    "rightValue": "true",
+                    "id": "d04be27c-8365-4b39-a36e-ed0d65c18bbd",
+                    "leftValue": "={{ $('On form submission').item.json.INR }}",
+                    "rightValue": 3.5,
                     "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "d04be27c-8365-4b39-a36e-ed0d65c18bbd"
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  },
+                  {
+                    "id": "a19be27c-8365-4b39-a36e-ed0d65c18bb1",
+                    "leftValue": "={{ $('On form submission').item.json.RBS }}",
+                    "rightValue": 300,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -173,11 +121,20 @@
                 "conditions": [
                   {
                     "id": "8d41d210-c582-4649-b965-ec28e77007f0",
-                    "leftValue": "={{ (\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['INR Level'] > 2.5) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['INR Level'] > 3) }}",
-                    "rightValue": "true",
+                    "leftValue": "={{ $('On form submission').item.json.INR }}",
+                    "rightValue": 3.5,
                     "operator": {
-                      "type": "string",
-                      "operation": "equals"
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  },
+                  {
+                    "id": "b241d210-c582-4649-b965-ec28e77007f2",
+                    "leftValue": "={{ $('On form submission').item.json.RBS }}",
+                    "rightValue": 300,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
                     }
                   }
                 ],
@@ -197,11 +154,20 @@
                 "conditions": [
                   {
                     "id": "7e473793-f0c4-4586-9fa4-4107ea3ee02d",
-                    "leftValue": "={{ (\u0024('On form submission').item.json.Age > 65 && \u0024('On form submission').item.json['RBS level'] > 250) || (\u0024('On form submission').item.json.Age <= 65 && \u0024('On form submission').item.json['RBS level'] > 300) }}",
-                    "rightValue": "true",
+                    "leftValue": "={{ $('On form submission').item.json.RBS }}",
+                    "rightValue": 300,
                     "operator": {
-                      "type": "string",
-                      "operation": "equals"
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  },
+                  {
+                    "id": "c3473793-f0c4-4586-9fa4-4107ea3ee023",
+                    "leftValue": "={{ $('On form submission').item.json.INR }}",
+                    "rightValue": 3.5,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
                     }
                   }
                 ],
@@ -227,10 +193,124 @@
     },
     {
       "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "CEWS Forensic Audit Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Audit_Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Formatted_Date": "={{ $('Date & Time').item.json.Formatted_Date }}",
+            "Patient ID": "={{ $('On form submission').item.json['Patient ID'] }}",
+            "Age": "={{ $('On form submission').item.json.Age }}",
+            "INR": "={{ $('On form submission').item.json.INR }}",
+            "RBS": "={{ $('On form submission').item.json.RBS }}",
+            "Triage Category": "={{ ($('On form submission').item.json.INR > 3.5 &&$('On form submission').item.json.RBS > 300) ? 'Dual Critical Risk' : ($('On form submission').item.json.INR > 3.5 ? 'Bleeding Liability' : ($('On form submission').item.json.RBS > 300 ? 'Metabolic Crisis' : 'Normal Baseline')) }}",
+            "Dispatch Status": "={{ ($('On form submission').item.json.INR > 3.5 \vert{}\vert{}$('On form submission').item.json.RBS > 300) ? 'Dispatched (Gmail API)' : 'Logged (Fallback Sink)' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Formatted_Date",
+              "displayName": "Formatted_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Patient ID",
+              "displayName": "Patient ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "INR",
+              "displayName": "INR",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RBS",
+              "displayName": "RBS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Triage Category",
+              "displayName": "Triage Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Dispatch Status",
+              "displayName": "Dispatch Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        656
+      ],
+      "id": "445fcf2e-1c6a-48c1-b830-a8ec41bf4c64",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_OAUTH2_ID",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
         "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨🚨 طوارئ قصوى: خطر سريري مزدوج (سيولة + سكر)\n\nملف رقم {{ \u0024('On form submission').item.json['Patient ID'] }}",
+        "subject": "=🚨🚨 طوارئ قصوى: خطر سريري مزدوج (سيولة + سكر) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
         "emailType": "text",
-        "message": "التوصية السريرية (طوارئ قصوى): حالة حرجة معقدة. المريض يواجه خطراً مزدوجاً يتمثل في ارتفاع شديد في مستوى السيولة (INR) مما يرفع احتمالية النزيف، متزامناً مع ارتفاع حرج في سكر الدم (RBS) مما ينذر بحماض كيتوني (DKA) أو حالة فرط أسمولية (HHS). يُرجى التدخل الفوري لموازنة السوائل، وإجراء تقييم شامل قبل أي تداخل جراحي أو تعديل في بروتوكول التخثر.",
+        "message": "التوصية السريرية (طوارئ قصوى): حالة حرجة معقدة. المريض يواجه خطراً مزدوجاً يتمثل في: ارتفاع شديد في مستوى السيولة (INR) مما يرفع احتمالية النزيف، وارتفاع حرج متزامن في سكر الدم (RBS) مما ينذر بحماض كيتوني (DKA) أو حالة فرط أسمولية (HHS). الإجراء المطلوب: يرجى التدخل الفوري لموازنة السوائل، وإجراء تقييم شامل قبل أي تداخل جراحي أو تعديل في بروتوكول التخثر.",
         "options": {
           "appendAttribution": false
         }
@@ -254,9 +334,9 @@
     {
       "parameters": {
         "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨 تنبيه طبي: خطر نزيف مرجح (ارتفاع INR)\nملف رقم: {{ \u0024('On form submission').item.json['Patient ID'] }}",
+        "subject": "=🚨 تنبيه طبي: خطر نزيف مرجح (ارتفاع INR) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
         "emailType": "text",
-        "message": "التوصية السريرية: مستوى السيولة (INR) يتجاوز العتبة العلاجية الآمنة. هناك خطر مرتفع لحدوث نزيف تلقائي أو مضاعفات نزفية. يُرجى التقييم الفوري للعلامات الحيوية، ومراجعة جرعات الأدوية المميعة للدم (مثل الوارفارين)، والنظر في بروتوكولات الانعكاس (Reversal) إذا استدعت الحالة السريرية.",
+        "message": "التوصية السريرية: مستوى السيولة (INR) يتجاوز العتبة العلاجية الآمنة (> 3.5). هناك خطر مرتفع لحدوث نزيف تلقائي أو مضاعفات نزفية. يُرجى التقييم الفوري للعلامات الحيوية، ومراجعة جرعات الأدوية المميعة للدم، والنظر في بروتوكولات الانعكاس (Reversal) إذا استدعت الحالة السريرية.",
         "options": {
           "appendAttribution": false
         }
@@ -280,9 +360,9 @@
     {
       "parameters": {
         "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨 تنبيه طبي: خطر أيضي (ارتفاع RBS)\nملف رقم {{ \u0024('On form submission').item.json['Patient ID'] }}",
+        "subject": "=🚨 تنبيه طبي: خطر أيضي (ارتفاع RBS) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
         "emailType": "text",
-        "message": "التوصية السريرية: ارتفاع حرج في مستوى السكر العشوائي في الدم (RBS). المريض عُرضة لمضاعفات الخطر الأيضي مثل الحماض الكيتوني السكري (DKA) أو متلازمة فرط الأسمولية (HHS). يُرجى إجراء تقييم فوري لمستوى الكيتونات، وتقييم حالة الجفاف، والبدء ببروتوكول السوائل الوريدية وإدارة الأنسولين وفقاً للمعطيات.",
+        "message": "التوصية السريرية: ارتفاع حرج في مستوى السكر العشوائي في الدم (RBS > 300 mg/dL). المريض عُرضة لمضاعفات الخطر الأيضي مثل الحماض الكيتوني السكري (DKA) أو متلازمة فرط الأسمولية (HHS). يُرجى إجراء تقييم فوري لمستوى الكيتونات، وتقييم حالة الجفاف، والبدء ببروتوكول السوائل الوريدية وإدارة الأنسولين وفقاً للمعطيات.",
         "options": {
           "appendAttribution": false
         }
@@ -302,97 +382,14 @@
           "name": "Gmail OAuth2 API"
         }
       }
-    },
-    {
-      "parameters": {
-        "operation": "formatDate",
-        "date": "={{ \u0024json.submittedAt }}",
-        "format": "=yyyy-MM-dd HH:mm",
-        "outputFieldName": "Formatted_Date",
-        "options": {
-          "includeInputFields": true
-        }
-      },
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        -592,
-        176
-      ],
-      "id": "c962339b-53ca-4f57-987c-84aeca9badad",
-      "name": "Date & Time"
     }
   ],
-  "pinData": {
-    "On form submission": [
-      {
-        "json": {
-          "Patient ID": "001",
-          "Age": 73,
-          "INR Level": 5.5,
-          "RBS level": 390,
-          "submittedAt": "2026-07-12T17:58:25.621-07:00",
-          "formMode": "test"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
   "connections": {
     "On form submission": {
       "main": [
         [
           {
             "node": "Date & Time",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch": {
-      "main": [
-        [
-          {
-            "node": "Append row in sheet",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Append row in sheet",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Send a message1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Append row in sheet",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Send a message2",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Append row in sheet",
             "type": "main",
             "index": 0
           }
@@ -409,19 +406,11 @@
           }
         ]
       ]
-    }
-  },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
-  },
-  "versionId": "34f4e641-9da5-4765-abe1-e59d7c871fdf",
-  "meta": {
-    "instanceId": "b6f6608172db347572a6bfe4357ec10af87bf8337780a62030f4f67f341c9f4a"
-  },
-  "nodeGroups": [],
-  "id": "Ft7sXb4bhKpH170D",
-  "tags": []
-}
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index
