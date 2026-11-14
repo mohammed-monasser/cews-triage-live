@@ -217,7 +217,7 @@
             "INR": "={{ $('On form submission').item.json.INR }}",
             "RBS": "={{ $('On form submission').item.json.RBS }}",
             "Triage Category": "={{ ($('On form submission').item.json.INR > 3.5 &&$('On form submission').item.json.RBS > 300) ? 'Dual Critical Risk' : ($('On form submission').item.json.INR > 3.5 ? 'Bleeding Liability' : ($('On form submission').item.json.RBS > 300 ? 'Metabolic Crisis' : 'Normal Baseline')) }}",
-            "Dispatch Status": "={{ ($('On form submission').item.json.INR > 3.5 \vert{}\vert{}$('On form submission').item.json.RBS > 300) ? 'Dispatched (Gmail API)' : 'Logged (Fallback Sink)' }}"
+            "Dispatch Status": "={{ ($('On form submission').item.json.INR <= 3.5 &&$('On form submission').item.json.RBS <= 300) ? 'Logged (Fallback Sink)' : 'Dispatched (Gmail API)' }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -321,96 +321,4 @@
         0,
         0
       ],
-      "id": "4903f13b-61cc-4547-a17e-f1df1490f260",
-      "name": "Send a message",
-      "webhookId": "cbbcc179-a703-4134-9846-0c3c0b91acc7",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "GMAIL_OAUTH2_ID",
-          "name": "Gmail OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨 تنبيه طبي: خطر نزيف مرجح (ارتفاع INR) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
-        "emailType": "text",
-        "message": "التوصية السريرية: مستوى السيولة (INR) يتجاوز العتبة العلاجية الآمنة (> 3.5). هناك خطر مرتفع لحدوث نزيف تلقائي أو مضاعفات نزفية. يُرجى التقييم الفوري للعلامات الحيوية، ومراجعة جرعات الأدوية المميعة للدم، والنظر في بروتوكولات الانعكاس (Reversal) إذا استدعت الحالة السريرية.",
-        "options": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        16,
-        160
-      ],
-      "id": "87c47b93-135a-4894-86e2-9954b8a34c85",
-      "name": "Send a message1",
-      "webhookId": "cbbcc179-a703-4134-9846-0c3c0b91acc7",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "GMAIL_OAUTH2_ID",
-          "name": "Gmail OAuth2 API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sendTo": "clinician-alert@hospital-domain.org",
-        "subject": "=🚨 تنبيه طبي: خطر أيضي (ارتفاع RBS) ملف رقم {{ $('On form submission').item.json['Patient ID'] }}",
-        "emailType": "text",
-        "message": "التوصية السريرية: ارتفاع حرج في مستوى السكر العشوائي في الدم (RBS > 300 mg/dL). المريض عُرضة لمضاعفات الخطر الأيضي مثل الحماض الكيتوني السكري (DKA) أو متلازمة فرط الأسمولية (HHS). يُرجى إجراء تقييم فوري لمستوى الكيتونات، وتقييم حالة الجفاف، والبدء ببروتوكول السوائل الوريدية وإدارة الأنسولين وفقاً للمعطيات.",
-        "options": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        0,
-        432
-      ],
-      "id": "452ee425-9a77-4e54-8ee5-66a8330f51ba",
-      "name": "Send a message2",
-      "webhookId": "cbbcc179-a703-4134-9846-0c3c0b91acc7",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "GMAIL_OAUTH2_ID",
-          "name": "Gmail OAuth2 API"
-        }
-      }
-    }
-  ],
-  "connections": {
-    "On form submission": {
-      "main": [
-        [
-          {
-            "node": "Date & Time",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Date & Time": {
-      "main": [
-        [
-          {
-            "node": "Switch",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch": {
-      "main": [
-        [
-          {
-            "node": "Append row in sheet",
-            "type": "main",
-            "index
+      "id": "4903f13b-61cc-4547-a17e-f1df149
